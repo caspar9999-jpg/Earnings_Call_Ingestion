@@ -1,0 +1,67 @@
+{
+  "transcript_id": "SYNTH-2025Q1-008",
+  "company_name": "RetailMax Corporation",
+  "company_ticker": "RMX",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-08",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "David Kim",
+          "role": "ceo"
+        }
+      ],
+      "text": "We have reduced prices on our home appliance line by 10% to clear excess inventory. At the same time, we are seeing increased demand for our budget-friendly electronics as consumers become more price-sensitive. RetailMax sells consumer electronics through our network of 500 stores and e-commerce platform."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "price_adjustment",
+        "direction": "decrease",
+        "subject_entity": {
+          "name": "RetailMax Corporation",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "home appliance line",
+          "type": "product"
+        },
+        "statement": "We have reduced prices on our home appliance line by 10% to clear excess inventory",
+        "evidence_quality": "explicit",
+        "magnitude": "10%",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We have reduced prices on our home appliance line by 10% to clear excess inventory"
+        }
+      },
+      {
+        "signal_type": "demand_shift",
+        "direction": "increase",
+        "subject_entity": {
+          "name": "RetailMax Corporation",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "budget-friendly electronics",
+          "type": "product"
+        },
+        "statement": "we are seeing increased demand for our budget-friendly electronics",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "we are seeing increased demand for our budget-friendly electronics"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

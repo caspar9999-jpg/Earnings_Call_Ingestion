@@ -1,0 +1,67 @@
+{
+  "transcript_id": "SYNTH-2025Q1-003",
+  "company_name": "Pacific Energy Corp",
+  "company_ticker": "PEC",
+  "quarter": "2025Q1",
+  "call_date": "2025-01-22",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Mike Torres",
+          "role": "ceo"
+        }
+      ],
+      "text": "Global oil markets have been extremely volatile this quarter with the benchmark crude price swinging between $72 and $94 per barrel. In addition, our primary lubricant supplier, ChemSupply Ltd, experienced a production disruption at their Texas facility, causing a two-week interruption in deliveries. We have activated alternative sourcing through Gulf Coast Distributors."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "market_price_shift",
+        "direction": "volatile",
+        "subject_entity": {
+          "name": "Pacific Energy Corp",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "crude oil",
+          "type": "commodity"
+        },
+        "statement": "Global oil markets have been extremely volatile this quarter with the benchmark crude price swinging between $72 and $94 per barrel",
+        "evidence_quality": "explicit",
+        "volatility_intensity": "high",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "Global oil markets have been extremely volatile this quarter with the benchmark crude price swinging between $72 and $94 per barrel"
+        }
+      },
+      {
+        "signal_type": "supply_status_change",
+        "direction": "disruption",
+        "subject_entity": {
+          "name": "Pacific Energy Corp",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "ChemSupply Ltd",
+          "type": "company"
+        },
+        "statement": "our primary lubricant supplier, ChemSupply Ltd, experienced a production disruption at their Texas facility, causing a two-week interruption in deliveries",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "our primary lubricant supplier, ChemSupply Ltd, experienced a production disruption at their Texas facility, causing a two-week interruption in deliveries"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

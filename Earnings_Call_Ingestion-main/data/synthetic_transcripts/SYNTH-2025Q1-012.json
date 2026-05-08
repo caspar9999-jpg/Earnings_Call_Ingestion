@@ -1,0 +1,169 @@
+{
+  "transcript_id": "SYNTH-2025Q1-012",
+  "company_name": "MegaChem Industries",
+  "company_ticker": "MCHM",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-20",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Carl Benson",
+          "role": "ceo"
+        }
+      ],
+      "text": "This quarter was marked by moderate volatility in caustic soda pricing. Our plant in Baton Rouge increased output 5% after completing maintenance. We modified our supply agreement with Delta Chemicals, extending the contract with updated volume commitments. We lost our customer Gulf Coast Refining as they terminated the relationship and switched to a competitor."
+    },
+    {
+      "section_type": "q_and_a",
+      "speakers": [
+        {
+          "name": "Jane Analyst",
+          "role": "analyst"
+        },
+        {
+          "name": "Carl Benson",
+          "role": "ceo"
+        }
+      ],
+      "text": "Jane: What is the outlook for caustic soda pricing? Carl: We expect pricing to remain moderately volatile for the next quarter. Jane: How does this impact your agreement with Delta Chemicals? Carl: The modified terms actually benefit us with higher minimum volumes."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "market_price_shift",
+        "direction": "volatile",
+        "subject_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "caustic soda",
+          "type": "commodity"
+        },
+        "statement": "This quarter was marked by moderate volatility in caustic soda pricing",
+        "evidence_quality": "explicit",
+        "volatility_intensity": "moderate",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "moderate volatility in caustic soda pricing"
+        }
+      },
+      {
+        "signal_type": "production_status_change",
+        "direction": "increase",
+        "subject_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Baton Rouge plant",
+          "type": "division"
+        },
+        "statement": "Our plant in Baton Rouge increased output 5% after completing maintenance",
+        "evidence_quality": "explicit",
+        "magnitude": "5%",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "Our plant in Baton Rouge increased output 5% after completing maintenance"
+        }
+      },
+      {
+        "signal_type": "contract_modification",
+        "direction": "modify",
+        "subject_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Delta Chemicals",
+          "type": "company"
+        },
+        "statement": "We modified our supply agreement with Delta Chemicals, extending the contract with updated volume commitments",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We modified our supply agreement with Delta Chemicals, extending the contract with updated volume commitments"
+        }
+      },
+      {
+        "signal_type": "outlook_uncertainty",
+        "direction": null,
+        "subject_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "caustic soda pricing",
+          "type": "commodity"
+        },
+        "statement": "We expect pricing to remain moderately volatile for the next quarter",
+        "evidence_quality": "implicit",
+        "temporal": {
+          "granularity": "forward_looking"
+        },
+        "source": {
+          "section": "q_and_a",
+          "excerpt": "We expect pricing to remain moderately volatile for the next quarter"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "relation_type": ":SUPPLIES_TO",
+        "subject_entity": {
+          "name": "Delta Chemicals",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "statement": "We modified our supply agreement with Delta Chemicals",
+        "llm_confidence": "explicit",
+        "evidence_quality": "explicit",
+        "is_termination": false,
+        "temporal": {
+          "granularity": "ongoing"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We modified our supply agreement with Delta Chemicals"
+        }
+      },
+      {
+        "relation_type": ":SUPPLIES_TO",
+        "subject_entity": {
+          "name": "MegaChem Industries",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Gulf Coast Refining",
+          "type": "company"
+        },
+        "statement": "We lost our customer Gulf Coast Refining as they terminated the relationship and switched to a competitor",
+        "llm_confidence": "explicit",
+        "evidence_quality": "explicit",
+        "is_termination": true,
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We lost our customer Gulf Coast Refining as they terminated the relationship and switched to a competitor"
+        }
+      }
+    ]
+  }
+}

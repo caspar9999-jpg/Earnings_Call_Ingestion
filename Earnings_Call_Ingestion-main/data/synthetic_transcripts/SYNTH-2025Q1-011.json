@@ -1,0 +1,23 @@
+{
+  "transcript_id": "SYNTH-2025Q1-011",
+  "company_name": "SteadyState Utilities",
+  "company_ticker": "SSU",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-18",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Maria Gonzalez",
+          "role": "ceo"
+        }
+      ],
+      "text": "This was a routine quarter for SteadyState Utilities. We continued our normal operations across all service territories in the Midwest and Northeast regions. Revenue was in line with expectations and capital expenditure remained on track. We look forward to another stable year."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [],
+    "relations": []
+  }
+}

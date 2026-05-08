@@ -1,0 +1,82 @@
+{
+  "transcript_id": "SYNTH-2025Q1-001",
+  "company_name": "Northern Manufacturing",
+  "company_ticker": "NMFG",
+  "quarter": "2025Q1",
+  "call_date": "2025-01-15",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "John Steel",
+          "role": "ceo"
+        }
+      ],
+      "text": "Good morning. This quarter our input costs increased approximately 12% due to global steel tariffs. We have been working closely with our primary raw material supplier, Midwest Steel Supply, who has been a reliable partner for over a decade. Despite these headwinds, we maintained production levels across all facilities."
+    },
+    {
+      "section_type": "q_and_a",
+      "speakers": [
+        {
+          "name": "Sarah Analyst",
+          "role": "analyst"
+        },
+        {
+          "name": "John Steel",
+          "role": "ceo"
+        }
+      ],
+      "text": "Sarah: Can you quantify the cost impact? John: The 12% increase in steel costs translated to roughly $4M in additional expenses this quarter."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "cost_change",
+        "direction": "increase",
+        "subject_entity": {
+          "name": "Northern Manufacturing",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "steel",
+          "type": "commodity"
+        },
+        "statement": "this quarter our input costs increased approximately 12% due to global steel tariffs",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "this quarter our input costs increased approximately 12% due to global steel tariffs"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "relation_type": ":SUPPLIES_TO",
+        "subject_entity": {
+          "name": "Midwest Steel Supply",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Northern Manufacturing",
+          "type": "company"
+        },
+        "statement": "our primary raw material supplier, Midwest Steel Supply",
+        "llm_confidence": "explicit",
+        "evidence_quality": "explicit",
+        "is_termination": false,
+        "temporal": {
+          "granularity": "ongoing"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "our primary raw material supplier, Midwest Steel Supply, who has been a reliable partner for over a decade"
+        }
+      }
+    ]
+  }
+}

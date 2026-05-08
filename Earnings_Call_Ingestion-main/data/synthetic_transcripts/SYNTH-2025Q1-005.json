@@ -1,0 +1,67 @@
+{
+  "transcript_id": "SYNTH-2025Q1-005",
+  "company_name": "FreshFoods Group",
+  "company_ticker": "FFG",
+  "quarter": "2025Q1",
+  "call_date": "2025-01-28",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Anna Dupont",
+          "role": "ceo"
+        }
+      ],
+      "text": "Consumer demand for our packaged meal kits has declined 8% this quarter as customers trade down to lower-priced alternatives. We have also renegotiated terms with our largest retail partner, MegaMart, and the revised agreement reflects less favorable pricing for us."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "demand_shift",
+        "direction": "decrease",
+        "subject_entity": {
+          "name": "FreshFoods Group",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "packaged meal kits",
+          "type": "product"
+        },
+        "statement": "Consumer demand for our packaged meal kits has declined 8% this quarter",
+        "evidence_quality": "explicit",
+        "magnitude": "8%",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "Consumer demand for our packaged meal kits has declined 8% this quarter"
+        }
+      },
+      {
+        "signal_type": "contract_modification",
+        "direction": "weaken",
+        "subject_entity": {
+          "name": "FreshFoods Group",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "MegaMart",
+          "type": "company"
+        },
+        "statement": "the revised agreement reflects less favorable pricing for us",
+        "evidence_quality": "implicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "the revised agreement reflects less favorable pricing for us"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

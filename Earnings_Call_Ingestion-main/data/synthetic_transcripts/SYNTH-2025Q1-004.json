@@ -1,0 +1,62 @@
+{
+  "transcript_id": "SYNTH-2025Q1-004",
+  "company_name": "AutoParts International",
+  "company_ticker": "API",
+  "quarter": "2025Q1",
+  "call_date": "2025-01-25",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "James Wu",
+          "role": "ceo"
+        }
+      ],
+      "text": "Our Ohio plant experienced a three-week production disruption due to equipment failure, reducing output by roughly 15,000 units. As a result, we are temporarily contracting production capacity. We do not expect this to materially impact our full-year outlook."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "production_status_change",
+        "direction": "disruption",
+        "subject_entity": {
+          "name": "AutoParts International",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Ohio plant",
+          "type": "division"
+        },
+        "statement": "Our Ohio plant experienced a three-week production disruption due to equipment failure, reducing output by roughly 15,000 units",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "Our Ohio plant experienced a three-week production disruption due to equipment failure"
+        }
+      },
+      {
+        "signal_type": "capacity_expansion",
+        "direction": "contraction",
+        "subject_entity": {
+          "name": "AutoParts International",
+          "type": "company"
+        },
+        "statement": "we are temporarily contracting production capacity",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "we are temporarily contracting production capacity"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

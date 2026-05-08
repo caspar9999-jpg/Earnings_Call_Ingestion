@@ -1,0 +1,91 @@
+{
+  "transcript_id": "SYNTH-2025Q1-007",
+  "company_name": "GreenBuild Materials",
+  "company_ticker": "GBM",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-05",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Elena Voss",
+          "role": "ceo"
+        }
+      ],
+      "text": "We are pleased to report that recycled plastic resin costs have decreased 15% this quarter, improving our margins. We use recycled polyethylene terephthalate to produce our eco-friendly construction panels. Our long-term supply agreement with EcoPlast Recycling ensures stable access to this key input."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "cost_change",
+        "direction": "decrease",
+        "subject_entity": {
+          "name": "GreenBuild Materials",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "recycled plastic resin",
+          "type": "commodity"
+        },
+        "statement": "recycled plastic resin costs have decreased 15% this quarter",
+        "evidence_quality": "explicit",
+        "magnitude": "15%",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "recycled plastic resin costs have decreased 15% this quarter"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "relation_type": ":USED_IN",
+        "subject_entity": {
+          "name": "recycled polyethylene terephthalate",
+          "type": "commodity"
+        },
+        "object_entity": {
+          "name": "eco-friendly construction panels",
+          "type": "product"
+        },
+        "statement": "We use recycled polyethylene terephthalate to produce our eco-friendly construction panels",
+        "llm_confidence": "explicit",
+        "evidence_quality": "explicit",
+        "is_termination": false,
+        "temporal": {
+          "granularity": "ongoing"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We use recycled polyethylene terephthalate to produce our eco-friendly construction panels"
+        }
+      },
+      {
+        "relation_type": ":SUPPLIES_TO",
+        "subject_entity": {
+          "name": "EcoPlast Recycling",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "GreenBuild Materials",
+          "type": "company"
+        },
+        "statement": "Our long-term supply agreement with EcoPlast Recycling ensures stable access to this key input",
+        "llm_confidence": "explicit",
+        "evidence_quality": "explicit",
+        "is_termination": false,
+        "temporal": {
+          "granularity": "ongoing"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "Our long-term supply agreement with EcoPlast Recycling ensures stable access to this key input"
+        }
+      }
+    ]
+  }
+}

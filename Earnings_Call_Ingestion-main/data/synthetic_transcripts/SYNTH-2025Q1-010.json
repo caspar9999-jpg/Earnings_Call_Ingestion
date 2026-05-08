@@ -1,0 +1,66 @@
+{
+  "transcript_id": "SYNTH-2025Q1-010",
+  "company_name": "AeroDefense Systems",
+  "company_ticker": "ADS",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-15",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Robert Klein",
+          "role": "ceo"
+        }
+      ],
+      "text": "We have successfully strengthened our partnership with the Department of Defense through a new five-year contract extension with improved terms. Additionally, our key titanium supplier, Titanium Resources Inc., has resumed normal deliveries after resolving their labor dispute last month."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "contract_modification",
+        "direction": "strengthen",
+        "subject_entity": {
+          "name": "AeroDefense Systems",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Department of Defense",
+          "type": "company"
+        },
+        "statement": "We have successfully strengthened our partnership with the Department of Defense through a new five-year contract extension with improved terms",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "forward_looking"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "We have successfully strengthened our partnership with the Department of Defense through a new five-year contract extension with improved terms"
+        }
+      },
+      {
+        "signal_type": "supply_status_change",
+        "direction": "recovery",
+        "subject_entity": {
+          "name": "AeroDefense Systems",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Titanium Resources Inc.",
+          "type": "company"
+        },
+        "statement": "our key titanium supplier, Titanium Resources Inc., has resumed normal deliveries after resolving their labor dispute last month",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "our key titanium supplier, Titanium Resources Inc., has resumed normal deliveries"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

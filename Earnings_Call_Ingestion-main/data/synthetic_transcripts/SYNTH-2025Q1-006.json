@@ -1,0 +1,72 @@
+{
+  "transcript_id": "SYNTH-2025Q1-006",
+  "company_name": "GlobalShip Logistics",
+  "company_ticker": "GSL",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-01",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Raj Patel",
+          "role": "ceo"
+        }
+      ],
+      "text": "The Panama Canal drought caused a logistics disruption across our key shipping routes, adding 10-14 days to transit times during January. Looking ahead, we find it very difficult to predict shipping volumes for the remainder of the year given the macroeconomic uncertainty."
+    },
+    {
+      "section_type": "q_and_a",
+      "speakers": [
+        {
+          "name": "Tom Analyst",
+          "role": "analyst"
+        },
+        {
+          "name": "Raj Patel",
+          "role": "ceo"
+        }
+      ],
+      "text": "Tom: Can you provide volume guidance for Q2? Raj: Unfortunately, we cannot provide reliable guidance at this time due to the uncertain trade policy environment."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "logistics_status_change",
+        "direction": "disruption",
+        "subject_entity": {
+          "name": "GlobalShip Logistics",
+          "type": "company"
+        },
+        "statement": "The Panama Canal drought caused a logistics disruption across our key shipping routes, adding 10-14 days to transit times during January",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "The Panama Canal drought caused a logistics disruption across our key shipping routes"
+        }
+      },
+      {
+        "signal_type": "outlook_uncertainty",
+        "direction": null,
+        "subject_entity": {
+          "name": "GlobalShip Logistics",
+          "type": "company"
+        },
+        "statement": "we find it very difficult to predict shipping volumes for the remainder of the year given the macroeconomic uncertainty",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "forward_looking"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "we find it very difficult to predict shipping volumes for the remainder of the year given the macroeconomic uncertainty"
+        }
+      }
+    ],
+    "relations": []
+  }
+}

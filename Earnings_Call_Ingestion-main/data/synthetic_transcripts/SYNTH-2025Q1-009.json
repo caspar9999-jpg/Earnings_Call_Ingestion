@@ -1,0 +1,63 @@
+{
+  "transcript_id": "SYNTH-2025Q1-009",
+  "company_name": "BioPharma Labs",
+  "company_ticker": "BPL",
+  "quarter": "2025Q1",
+  "call_date": "2025-02-12",
+  "sections": [
+    {
+      "section_type": "prepared_remarks",
+      "speakers": [
+        {
+          "name": "Dr. Sarah Mills",
+          "role": "ceo"
+        }
+      ],
+      "text": "Our new sterile manufacturing facility in Singapore received regulatory approval and production output has recovered to normal levels following last quarter's contamination issue. We are also investing $200M to expand our vaccine production capacity by 40% over the next 18 months."
+    }
+  ],
+  "_ground_truth": {
+    "signals": [
+      {
+        "signal_type": "production_status_change",
+        "direction": "recovery",
+        "subject_entity": {
+          "name": "BioPharma Labs",
+          "type": "company"
+        },
+        "object_entity": {
+          "name": "Singapore facility",
+          "type": "division"
+        },
+        "statement": "production output has recovered to normal levels following last quarter's contamination issue",
+        "evidence_quality": "explicit",
+        "temporal": {
+          "granularity": "quarter"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "production output has recovered to normal levels following last quarter's contamination issue"
+        }
+      },
+      {
+        "signal_type": "capacity_expansion",
+        "direction": "expansion",
+        "subject_entity": {
+          "name": "BioPharma Labs",
+          "type": "company"
+        },
+        "statement": "investing $200M to expand our vaccine production capacity by 40% over the next 18 months",
+        "evidence_quality": "explicit",
+        "magnitude": "$200M, 40%",
+        "temporal": {
+          "granularity": "forward_looking"
+        },
+        "source": {
+          "section": "prepared_remarks",
+          "excerpt": "investing $200M to expand our vaccine production capacity by 40% over the next 18 months"
+        }
+      }
+    ],
+    "relations": []
+  }
+}
