@@ -34,6 +34,8 @@ class Pipeline:
 
     def run(self, transcript: TranscriptInput, quarter: str) -> PipelineResult:
         prompt = PromptBuilder.default_pipeline_prompt()
+        formatted = self._format_transcript(transcript)
+        prompt = f"{prompt}\n\n## Transcript\n{formatted}"
         extraction = self._llm.extract(transcript, prompt)
 
         self._validate_ids(extraction, transcript.transcript_id)
@@ -51,6 +53,13 @@ class Pipeline:
             vague_signals=signal_result.vague_signals,
             review_entries=collector.entries,
         )
+
+    @staticmethod
+    def _format_transcript(transcript: TranscriptInput) -> str:
+        parts = []
+        for section in transcript.sections:
+            parts.append(f"### {section.section_type}\n{section.text}")
+        return "\n\n".join(parts)
 
     def _validate_ids(
         self, extraction: ExtractionResult, transcript_id: str

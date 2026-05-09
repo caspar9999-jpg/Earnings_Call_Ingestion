@@ -26,7 +26,7 @@ class MockLLMExtractor:
         self.extract_calls: list[tuple] = []
 
     def extract(self, transcript, prompt: str) -> ExtractionResult:
-        self.extract_calls.append((transcript, prompt[:100]))
+        self.extract_calls.append((transcript, prompt))
         return self._extraction
 
 
@@ -171,3 +171,32 @@ class TestPipeline:
     def test_default_llm_extractor_is_created(self):
         pipeline = Pipeline()
         assert pipeline._llm is not None
+
+    def test_embeds_transcript_text_in_llm_prompt(self):
+        llm = MockLLMExtractor(ExtractionResult())
+        pipeline = Pipeline(llm_extractor=llm)
+        transcript = TranscriptInput(
+            transcript_id="TST-2025Q1",
+            company_name="Test",
+            company_ticker="TST",
+            quarter="2025Q1",
+            call_date=date(2025, 1, 1),
+            sections=[
+                {
+                    "section_type": "prepared_remarks",
+                    "speakers": [],
+                    "text": "Hello and welcome to the Q1 call.",
+                },
+                {
+                    "section_type": "q_and_a",
+                    "speakers": [],
+                    "text": "First question from the analyst.",
+                },
+            ],
+        )
+
+        result = pipeline.run(transcript, "2025Q1")
+
+        _, prompt = llm.extract_calls[0]
+        assert "Hello and welcome to the Q1 call." in prompt, "prepared_remarks text should be in prompt"
+        assert "First question from the analyst." in prompt, "q_and_a text should be in prompt"

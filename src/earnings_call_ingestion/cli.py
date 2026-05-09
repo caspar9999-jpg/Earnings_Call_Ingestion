@@ -5,6 +5,7 @@ from pathlib import Path
 
 from earnings_call_ingestion.pipeline import Pipeline
 from earnings_call_ingestion.transcript_preprocessor import TranscriptPreprocessor
+from earnings_call_ingestion.transcript_fetcher import NasdaqFetcher
 from earnings_call_ingestion.writer import Writer
 
 
@@ -58,6 +59,58 @@ def process_batch(input_dir: str) -> dict:
     return {"succeeded": succeeded, "failed": failed}
 
 
+def _save_transcript_json(transcript) -> Path:
+    output_dir = Path("data") / "transcripts"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / f"{transcript.transcript_id}.json"
+    path.write_text(json.dumps(transcript.model_dump(indent=2, default=str)), encoding="utf-8")
+    print(f"Saved {transcript.transcript_id} to {path}")
+    return path
+
+
+def cmd_fetch(args) -> None:
+    fetcher = NasdaqFetcher()
+    if args.url:
+        transcript = fetcher.fetch_from_url(args.url)
+    elif args.text_file:
+        if not args.ticker or not args.quarter:
+            print("Error: --ticker and --quarter required with --text-file")
+            sys.exit(1)
+        text = Path(args.text_file).read_text(encoding="utf-8")
+        transcript = fetcher.fetch_from_text(text, args.ticker, args.quarter, args.name)
+    else:
+        print("Error: specify --url or --text-file")
+        sys.exit(1)
+    _save_transcript_json(transcript)
+
+
+def cmd_fetch_one(args) -> None:
+    fetcher = NasdaqFetcher()
+    if args.url:
+        transcript = fetcher.fetch_from_url(args.url)
+        path = _save_transcript_json(transcript)
+    elif args.text_file:
+        if not args.ticker or not args.quarter:
+            print("Error: --ticker and --quarter required with --text-file")
+            sys.exit(1)
+        text = Path(args.text_file).read_text(encoding="utf-8")
+        transcript = fetcher.fetch_from_text(text, args.ticker, args.quarter, args.name)
+        path = _save_transcript_json(transcript)
+    else:
+        print("Error: specify --url or --text-file")
+        sys.exit(1)
+    process_one(str(path))
+
+
+def _add_fetch_arguments(subparser) -> None:
+    source_group = subparser.add_mutually_exclusive_group(required=True)
+    source_group.add_argument("--url", help="Nasdaq article URL")
+    source_group.add_argument("--text-file", help="Path to raw transcript text file")
+    subparser.add_argument("--ticker", help="Stock ticker (required with --text-file)")
+    subparser.add_argument("--quarter", help="Quarter like 2025Q1 (required with --text-file)")
+    subparser.add_argument("--name", help="Company name (optional with --text-file)")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Supply Chain Signal Extractor — Earnings Call Ingestion Pipeline"
@@ -71,12 +124,22 @@ def main() -> None:
     batch_parser = subparsers.add_parser("process", help="Process a directory of transcripts")
     batch_parser.add_argument("input_dir", help="Directory containing transcript JSON files")
 
+    fetch_parser = subparsers.add_parser("fetch", help="Fetch a transcript from Nasdaq or text file")
+    _add_fetch_arguments(fetch_parser)
+
+    fetch_one_parser = subparsers.add_parser("fetch-one", help="Fetch and process a transcript")
+    _add_fetch_arguments(fetch_one_parser)
+
     args = parser.parse_args()
 
     if args.command == "process-one":
         process_one(args.file, dry_run=args.dry_run)
     elif args.command == "process":
         process_batch(args.input_dir)
+    elif args.command == "fetch":
+        cmd_fetch(args)
+    elif args.command == "fetch-one":
+        cmd_fetch_one(args)
     else:
         parser.print_help()
 
