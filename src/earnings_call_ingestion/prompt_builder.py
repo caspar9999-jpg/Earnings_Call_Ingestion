@@ -65,11 +65,36 @@ class PromptBuilder:
                 ]
             )
             .add_output_format(
-                "Return ONLY valid JSON with two top-level arrays:\n"
-                '- "relations": list of relation objects\n'
-                '- "signals": list of signal objects\n'
-                "Do not include any text outside the JSON object. "
-                "Do not auto-assign 'confirmed' as llm_confidence."
+                "Return ONLY valid JSON with two top-level arrays.\n"
+                'Do not include any text outside the JSON object.\n'
+                'Do not auto-assign "confirmed" as llm_confidence.\n'
+                "\n"
+                "## Relation object fields:\n"
+                "- relation_id: str — format {transcript_id}--relation--{0001}\n"
+                "- transcript_id: str\n"
+                "- relation_type: str — one of :PROVIDES, :SUPPLIES_TO, :USED_IN\n"
+                "- subject_entity: object — {\"name\": str, \"type\": \"company\"|\"product\"|\"commodity\"|\"service\"}\n"
+                "- match_status_subject: \"unmatched\"\n"
+                "- object_entity: object — {\"name\": str, \"type\": \"company\"|\"product\"|\"commodity\"|\"service\"}\n"
+                "- match_status_object: \"unmatched\"\n"
+                "- statement: str — the exact sentence from the transcript\n"
+                "- llm_confidence: \"explicit\"|\"implicit\"|\"speculative\" (never \"confirmed\")\n"
+                "- evidence_quality: \"explicit\"|\"implicit\"|\"vague\"\n"
+                "- is_termination: bool — true if describing ending a relationship\n"
+                "- temporal: object — {\"granularity\": \"ongoing\"|\"quarter\"|\"year\"|\"exact_date\"}\n"
+                "- source: object — {\"section\": \"prepared_remarks\"|\"q_and_a\", \"excerpt\": str}\n"
+                "\n"
+                "## Signal object fields (all 10 types share these):\n"
+                "- signal_type: str — one of cost_change, price_adjustment, market_price_shift, production_status_change, supply_status_change, logistics_status_change, capacity_expansion, demand_shift, contract_modification, outlook_uncertainty\n"
+                "- signal_id: str — format {transcript_id}--signal--{0001}\n"
+                "- transcript_id: str\n"
+                "- direction: str — valid direction for the signal type (or null for outlook_uncertainty)\n"
+                "- subject_entity: object — {\"name\": str, \"type\": \"company\"|\"product\"|\"commodity\"|\"service\"|\"division\"}\n"
+                "- match_status_subject: \"unmatched\"\n"
+                "- statement: str — the exact sentence from the transcript\n"
+                "- evidence_quality: \"explicit\"|\"implicit\"|\"vague\"\n"
+                "- temporal: object — {\"granularity\": \"ongoing\"|\"quarter\"|\"year\"|\"exact_date\"}\n"
+                "- source: object — {\"section\": \"prepared_remarks\"|\"q_and_a\", \"excerpt\": str}"
             )
             .build()
         )

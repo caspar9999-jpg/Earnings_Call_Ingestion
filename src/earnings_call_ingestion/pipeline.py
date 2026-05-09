@@ -56,7 +56,12 @@ class Pipeline:
 
     @staticmethod
     def _format_transcript(transcript: TranscriptInput) -> str:
-        parts = []
+        header = (
+            f"Company: {transcript.company_name} ({transcript.company_ticker})\n"
+            f"Quarter: {transcript.quarter}\n"
+            f"Transcript ID: {transcript.transcript_id}"
+        )
+        parts = [header]
         for section in transcript.sections:
             parts.append(f"### {section.section_type}\n{section.text}")
         return "\n\n".join(parts)
