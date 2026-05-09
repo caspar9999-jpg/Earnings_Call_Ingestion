@@ -54,9 +54,6 @@ class RelationValidator:
         if rel.relation_type == RelationType.USED_IN:
             reasons.append(ReviewReason.CANDIDATE_USED_IN)
 
-        if not reasons:
-            reasons.append(ReviewReason.UNMATCHED_ENTITY)
-
         for reason in reasons:
             collector.add(
                 reason=reason,

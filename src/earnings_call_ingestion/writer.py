@@ -30,6 +30,10 @@ class Writer:
         path = self._output_dir / "signal_library" / f"vague_{quarter}.jsonl"
         self._write_jsonl(path, signals)
 
+    def write_relations(self, quarter: str, relations: list) -> None:
+        path = self._output_dir / "relations_library" / f"relations_{quarter}.jsonl"
+        self._write_jsonl(path, relations)
+
     def write_review_entries(self, quarter: str, entries: list) -> None:
         path = self._output_dir / "review_queue" / f"review_{quarter}.jsonl"
         self._write_jsonl(path, entries)

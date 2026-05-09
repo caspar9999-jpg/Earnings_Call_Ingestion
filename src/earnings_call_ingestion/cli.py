@@ -21,12 +21,14 @@ def process_one(transcript_path: str, dry_run: bool = False, writer: Writer | No
 
     if writer is None:
         writer = Writer()
+    writer.write_relations(preprocess_result.quarter, result.valid_relations)
     writer.write_signals(preprocess_result.quarter, result.production_signals)
     writer.write_vague_signals(preprocess_result.quarter, result.vague_signals)
     writer.write_review_entries(preprocess_result.quarter, result.review_entries)
 
     print(
         f"Processed {preprocess_result.transcript.transcript_id}: "
+        f"{len(result.valid_relations)} relations, "
         f"{len(result.production_signals)} signals, {len(result.vague_signals)} vague, "
         f"{len(result.review_entries)} review entries"
     )

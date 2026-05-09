@@ -9,6 +9,9 @@ from earnings_call_ingestion.schemas import (
     EntityType,
     EvidenceQuality,
     MatchStatus,
+    Relation,
+    RelationConfidence,
+    RelationType,
     SourceReference,
     Temporal,
     TemporalGranularity,
@@ -55,6 +58,30 @@ class TestWriter:
         signal = _make_signal("s3")
         writer.write_signals("2025Q1", [signal])
         assert (nested / "signal_library" / "signals_2025Q1.jsonl").exists()
+
+    def test_writes_relations_to_quarter_partitioned_file(self, tmp_path):
+        writer = Writer(output_dir=str(tmp_path))
+        relation = Relation(
+            relation_id="TST--relation--0001",
+            transcript_id="TST-2025Q1",
+            relation_type=RelationType.SUPPLIES_TO,
+            subject_entity=Entity(name="Nutrien", type=EntityType.COMPANY),
+            match_status_subject=MatchStatus.UNMATCHED,
+            object_entity=Entity(name="Cargill", type=EntityType.COMPANY),
+            match_status_object=MatchStatus.UNMATCHED,
+            statement="Nutrien supplies to Cargill.",
+            llm_confidence=RelationConfidence.IMPLICIT,
+            evidence_quality=EvidenceQuality.EXPLICIT,
+            temporal=Temporal(granularity=TemporalGranularity.ONGOING),
+            source=SourceReference(section="prepared_remarks", excerpt="Nutrien supplies to Cargill."),
+        )
+        writer.write_relations("2025Q1", [relation])
+        file_path = tmp_path / "relations_library" / "relations_2025Q1.jsonl"
+        assert file_path.exists()
+        lines = file_path.read_text().strip().split("\n")
+        assert len(lines) == 1
+        data = json.loads(lines[0])
+        assert data["relation_id"] == "TST--relation--0001"
 
     def test_multiple_quarters_routed_to_separate_files(self, tmp_path):
         writer = Writer(output_dir=str(tmp_path))

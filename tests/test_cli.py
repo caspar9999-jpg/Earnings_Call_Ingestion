@@ -25,6 +25,7 @@ class TestProcessOne:
                 (),
                 {
                     "extraction": ExtractionResult(),
+                    "valid_relations": [],
                     "production_signals": [],
                     "vague_signals": [],
                     "review_entries": [],

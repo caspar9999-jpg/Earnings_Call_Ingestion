@@ -6,7 +6,7 @@ from earnings_call_ingestion.llm_extractor import LLMExtractor
 from earnings_call_ingestion.prompt_builder import PromptBuilder
 from earnings_call_ingestion.relation_validator import RelationValidator
 from earnings_call_ingestion.review_collector import ReviewCollector
-from earnings_call_ingestion.schemas import ExtractionResult, ReviewEntry, Signal, TranscriptInput
+from earnings_call_ingestion.schemas import ExtractionResult, Relation, ReviewEntry, Signal, TranscriptInput
 from earnings_call_ingestion.signal_validator import SignalValidator
 
 _logger = logging.getLogger(__name__)
@@ -16,11 +16,13 @@ class PipelineResult:
     def __init__(
         self,
         extraction: ExtractionResult,
+        valid_relations: list[Relation],
         production_signals: list[Signal],
         vague_signals: list[Signal],
         review_entries: list[ReviewEntry],
     ) -> None:
         self.extraction = extraction
+        self.valid_relations = valid_relations
         self.production_signals = production_signals
         self.vague_signals = vague_signals
         self.review_entries = review_entries
@@ -39,11 +41,12 @@ class Pipeline:
         signal_result = SignalValidator().validate(extraction.signals)
 
         collector = ReviewCollector()
-        RelationValidator().validate(extraction.relations, collector)
+        valid_relations = RelationValidator().validate(extraction.relations, collector)
         BoundaryOverlapDetector().detect(extraction, collector)
 
         return PipelineResult(
             extraction=extraction,
+            valid_relations=valid_relations,
             production_signals=signal_result.production_signals,
             vague_signals=signal_result.vague_signals,
             review_entries=collector.entries,
