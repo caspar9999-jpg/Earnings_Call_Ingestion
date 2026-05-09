@@ -63,7 +63,7 @@ def _save_transcript_json(transcript) -> Path:
     output_dir = Path("data") / "transcripts"
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / f"{transcript.transcript_id}.json"
-    path.write_text(json.dumps(transcript.model_dump(indent=2, default=str)), encoding="utf-8")
+    path.write_text(json.dumps(transcript.model_dump(mode="json"), indent=2), encoding="utf-8")
     print(f"Saved {transcript.transcript_id} to {path}")
     return path
 
