@@ -4,6 +4,8 @@ Automated pipeline that processes earnings call transcripts via Gemini to extrac
 
 ## Quick Start
 
+### Automated Pipeline (recommended)
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -25,11 +27,34 @@ Batch process a folder of transcripts:
 python run_pipeline.py process path/to/folder/
 ```
 
-Run tests:
+### Manual Workflow (AI Studio)
+
+Use this for debugging, prompt iteration, or when automated extraction fails:
+
+1. **Generate the prompt** (embeds the transcript):
 ```bash
-pytest tests/
-pytest tests/ --run-integration    # needs API key
+python -c "import sys,json; from pathlib import Path; sys.path.insert(0,'src'); from earnings_call_ingestion.prompt_builder import PromptBuilder; from earnings_call_ingestion.schemas import TranscriptInput; from earnings_call_ingestion.pipeline import Pipeline; data=json.loads(Path('data/transcripts/TSN-2025Q1.json').read_text()); t=TranscriptInput(**data); full=PromptBuilder.default_pipeline_prompt()+'\n\n## Transcript\n'+Pipeline._format_transcript(t); Path('prompt_to_paste.txt').write_text(full)"
 ```
+
+2. Paste `prompt_to_paste.txt` into [Google AI Studio](https://aistudio.google.com/)
+3. Save the LLM response as `response.json` in this repo root
+4. **Validate and write output files:**
+```bash
+python process_response.py response.json
+```
+
+This creates JSONL files in `data/relations_library/`, `data/signal_library/`, and `data/review_queue/`.
+
+## Integration with the Knowledge Graph
+
+Once relations are extracted via either workflow, import them into Neo4j:
+
+```bash
+cd ../knowledge_graph
+python scripts/02_import_relations.py --relations ../earnings_call_ingestion/data/relations_library/relations_2025Q1.jsonl
+```
+
+See the [knowledge_graph repo](https://github.com/caspar9999-jpg/knowledge-graph) for Neo4j setup.
 
 ## Input Format
 
@@ -60,14 +85,16 @@ Transcripts must be canonical JSON:
 
 ```
 data/
+├── relations_library/
+│   └── relations_2025Q1.jsonl      # extracted relations → feeds the KG
 ├── signal_library/
-│   ├── signals_2025Q1.jsonl      # explicit + implicit signals
-│   └── vague_2025Q1.jsonl        # vague signals (audit log)
+│   ├── signals_2025Q1.jsonl        # explicit + implicit signals
+│   └── vague_2025Q1.jsonl          # vague signals (audit log)
 ├── review_queue/
-│   └── review_2025Q1.jsonl       # flagged items for human curation
+│   └── review_2025Q1.jsonl         # flagged items for human curation
 ├── failures/
-│   └── failed_extractions.jsonl  # transcripts that failed processing
-└── synthetic_transcripts/        # 12 golden test transcripts
+│   └── failed_extractions.jsonl    # transcripts that failed processing
+└── synthetic_transcripts/          # 12 golden test transcripts
 ```
 
 ## Signal Types (10)
@@ -98,23 +125,29 @@ data/
 ## Architecture
 
 ```
-Transcript JSON → Preprocessor → LLM Extractor (Gemini 2.5 Flash)
-                                      │
-                              ExtractionResult
-                             /                \
-                    Signal Validator     Relation Validator
-                    /         \                │
-          signals_{Q}   vague_{Q}      Review Entries
-                                           │
-                                    Boundary Overlap Detector
-                                           │
-                                    review_{Q}.jsonl
+Transcript JSON ─→ Preprocessor ─→ LLM Extractor (Gemini 2.5 Flash)
+                                        │
+                                ExtractionResult
+                               /                \
+                      Signal Validator     Relation Validator
+                      /         \                │
+            signals_{Q}   vague_{Q}      Review Entries
+                                               │
+                                        Boundary Overlap Detector
+                                               │
+                                        review_{Q}.jsonl    relations_{Q}.jsonl
+                                                                   │
+                                                              ┌─────┘
+                                                              ▼
+                                                     Knowledge Graph
+                                                     (Neo4j via KG repo)
 ```
 
 - **Single LLM call** returns both relations and signals in one JSON response
 - **No chunking** — Gemini's 1M token window handles full transcripts
-- **Entity linking skipped for MVP** — all entities marked `match_status: unmatched`
-- **Graph injection deferred** — relations routed to human review queue
+- **Entity linking** — all entities `match_status: unmatched` until the KG is queried
+- **Two workflows** — automated (`run_pipeline.py`) or manual (AI Studio + `process_response.py`)
+- **Graph injection** — `02_import_relations.py` in the KG repo ingests the relations JSONL
 
 ## Module Reference
 
@@ -129,6 +162,7 @@ Transcript JSON → Preprocessor → LLM Extractor (Gemini 2.5 Flash)
 | Boundary Overlap | `boundary_overlap.py` | Detect same excerpt in both streams |
 | Writer | `writer.py` | Quarter-partitioned JSONL writer |
 | CLI | `cli.py` | `process-one` and `process` commands |
+| Process Response | `process_response.py` | Manual AI Studio output → JSONL files |
 
 ## Tests
 
@@ -145,6 +179,8 @@ Transcript JSON → Preprocessor → LLM Extractor (Gemini 2.5 Flash)
 Environment variables (via `.env` or system env):
 - `GEMINI_API_KEY` — required, your Google AI Studio API key
 - `GOOGLE_API_KEY` — alternative name (falls back if `GEMINI_API_KEY` not set)
+
+See `.env.example` for the required format.
 
 ## Key Decisions
 
